@@ -49,7 +49,7 @@ object Presets {
         put("reverb", obj(false, "preset" to "none"))
         // Safety limiter always on, even in "no coloring" mode, in case the
         // source itself is hot.
-        put("limiter", obj(true))
+        put("limiter", obj(false))
     }
 
     fun music(): JSONObject = JSONObject().apply {
@@ -62,7 +62,7 @@ object Presets {
         put("virtualizer", obj(true, "strength" to 200))      // subtle widening
         put("loudness_enhancer", obj(true, "target_gain_mb" to 150)) // +1.5dB
         put("reverb", obj(false, "preset" to "none"))
-        put("limiter", obj(true))
+        put("limiter", obj(false))
     }
 
     fun movie(): JSONObject = JSONObject().apply {
@@ -77,7 +77,7 @@ object Presets {
         // dialogue rather than help. Leave this for the rare dry/mono
         // source, turned on manually.
         put("reverb", obj(false, "preset" to "smallroom"))
-        put("limiter", obj(true))
+        put("limiter", obj(false))
     }
 
     fun voice(): JSONObject = JSONObject().apply {
@@ -91,7 +91,7 @@ object Presets {
         put("virtualizer", obj(false, "strength" to 0))
         put("loudness_enhancer", obj(true, "target_gain_mb" to 100)) // +1dB
         put("reverb", obj(false, "preset" to "none"))
-        put("limiter", obj(true))
+        put("limiter", obj(false))
     }
 
     private fun obj(enabled: Boolean, vararg extra: Pair<String, Any>): JSONObject {
