@@ -60,7 +60,7 @@ object Presets {
         put("equalizer", obj(true, "eq_shape" to listOf(0.33, -0.05, 0.0, 0.08, 0.25)))
         put("bassboost", obj(true, "strength" to 250))        // 0..1000, moderate
         put("virtualizer", obj(true, "strength" to 200))      // subtle widening
-        put("loudness_enhancer", obj(true, "target_gain_mb" to 150)) // +1.5dB
+        put("loudness_enhancer", obj(true, "target_gain_mb" to 600)) // +6dB, tuned by ear - compensates for the bundle effect's internal headroom attenuation when bassboost+virtualizer are both active
         put("reverb", obj(false, "preset" to "none"))
         put("limiter", obj(false))
     }
@@ -71,7 +71,7 @@ object Presets {
         put("equalizer", obj(true, "eq_shape" to listOf(0.25, 0.0, -0.05, 0.17, 0.1)))
         put("bassboost", obj(false, "strength" to 0))
         put("virtualizer", obj(true, "strength" to 300))
-        put("loudness_enhancer", obj(true, "target_gain_mb" to 150))
+        put("loudness_enhancer", obj(true, "target_gain_mb" to 400)) // estimated - not ear-tuned, adjust if still quiet
         // Deliberately off by default: film mixes already carry their own
         // room ambience/reverb baked in, so adding more tends to blur
         // dialogue rather than help. Leave this for the rare dry/mono
@@ -89,7 +89,7 @@ object Presets {
         put("equalizer", obj(true, "eq_shape" to listOf(-0.15, -0.05, 0.1, 0.3, 0.12)))
         put("bassboost", obj(false, "strength" to 0))
         put("virtualizer", obj(false, "strength" to 0))
-        put("loudness_enhancer", obj(true, "target_gain_mb" to 100)) // +1dB
+        put("loudness_enhancer", obj(true, "target_gain_mb" to 150)) // estimated - voice preset has no bassboost/virtualizer so should need less compensation
         put("reverb", obj(false, "preset" to "none"))
         put("limiter", obj(false))
     }
