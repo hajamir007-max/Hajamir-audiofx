@@ -9,13 +9,24 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.ComponentActivity
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 
+/**
+ * This screen exists for one reason: Android 12+ refuses to start a
+ * foreground service purely from a background broadcast (see MainService's
+ * doc comment). Opening this Activity gives the OS a legitimate
+ * user-initiated moment to start it. After that, the running service can be
+ * reconfigured freely via ApplyReceiver's broadcasts from the Magisk/KernelSU
+ * module's WebUI - no need to reopen this screen for every preset change.
+ */
 class MainActivity : ComponentActivity() {
 
     private lateinit var statusView: TextView
 
-    private val notifPermLauncher =
+    private val notifPermLauncher = registerForActivityResultContracts()
+
+    private fun registerForActivityResultContracts() =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { _ ->
             startServiceAndUpdateStatus()
         }
@@ -58,7 +69,8 @@ class MainActivity : ComponentActivity() {
             startService(intent)
         }
         statusView.text =
-            "سرویس روشن شد ✔\n\nحالا می‌تونی این صفحه رو ببندی. از WebUI ماژول " +
-            "می‌تونی پریست‌ها رو عوض کنی، سرویس در پس‌زمینه فعال می‌مونه."
+            "برنامه فعال شد ✔\n\n" +
+            "برای استفاده فقط این برنامه رو ببند، از طریق WebUI ماژول Audiofx " +
+            "از کیفیت صدا لذت ببر👍"
     }
 }
