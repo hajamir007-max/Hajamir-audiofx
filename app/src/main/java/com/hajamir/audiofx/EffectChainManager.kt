@@ -41,11 +41,11 @@ class EffectChainManager {
      * device's Equalizer implementation reports. Some devices report EQ
      * ranges as wide as ±24dB — mapping a "gentle" relative shape value of
      * e.g. 0.3 onto that full range would produce a ~7dB boost, which is not
-     * gentle. Capping to a fixed ±6dB keeps preset intent consistent across
-     * devices. 6dB is a conventional upper bound for consumer EQ presets
-     * (most "loudness"/genre EQ curves stay within ±4 to ±6dB).
+     * gentle. Capped at ±10dB (bumped from ±6dB/±8dB after feedback that
+     * default presets felt too subtle on some devices) — the gentle safety
+     * limiter (see applyLimiter) is what keeps this from causing clipping.
      */
-    private val eqMaxAbsMb = 600
+    private val eqMaxAbsMb = 1000
 
     fun apply(config: JSONObject) {
         release()
@@ -164,10 +164,12 @@ class EffectChainManager {
                 /* inUse = */ true,
                 /* enabled = */ true,
                 /* linkGroup = */ 0,
-                /* attackTime = */ 3f,
-                /* releaseTime = */ 80f,
-                /* ratio = */ 20f, // steep — behaves close to a true limiter, not a gentle compressor
-                /* threshold = */ -1f, // dB, headroom just under full scale (true-peak margin)
+                /* attackTime = */ 5f,
+                /* releaseTime = */ 150f,
+                /* ratio = */ 4f,   // gentle — the earlier 20:1 @ -1dB caused audible
+                                    // pumping/quietness. Slightly firmer than 3:1 since
+                                    // v1.1 pushed default gains higher.
+                /* threshold = */ -0.5f, // dB, barely below full scale
                 /* postGain = */ 0f
             )
             config.setLimiterByChannelIndex(ch, limiter)
